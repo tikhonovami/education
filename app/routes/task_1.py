@@ -18,7 +18,22 @@ router = APIRouter(tags=["Стажировка"])
 @router.post("/find_in_different_registers", description="Задание_1. Удаление дублей")
 async def find_in_different_registers(words: list[str]) -> list[str]:
     """Описание."""
-
+    lower_words = dict()
     result = []
 
+    for word in words:
+        lower_word = word.lower()
+
+        if lower_word not in lower_words:
+            lower_words[lower_word] = [word]
+            continue
+
+        if word in lower_words[lower_word]:
+            lower_words[lower_word] = []
+            continue
+        
+        if lower_words[lower_word]:
+            lower_words[lower_word].append(word)
+    
+    result = [key for key, value in lower_words.items() if value]
     return result
