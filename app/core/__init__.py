@@ -2,12 +2,54 @@ from abc import ABC, abstractmethod
 from io import StringIO
 
 
-def convert_arabic_to_roman(number: int) -> str:
-    pass
+def convert_arabic_to_roman(number: int, i: int = -1, res: str = '') -> str:
+    '''
+    Функция переводит арабское число в римское.
+
+    Input:
+    number: int - арабское число,
+    i: int = -1 - указатель на базовое значение,
+    res: str = '' - результат (римское число),
+
+    Output:
+    res: str = '' - результат (римское число).
+    '''
+    nums = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]
+    values = ['I', 'IV', 'V', 'IX', 'X', 'XL', 'L', 'XC', 'C', 'CD', 'D', 'CM', 'M']
+
+    if not number:
+        return res
+
+    div = number // nums[i]
+    number %= nums[i]
+
+    res += div * values[i]
+
+    return convert_arabic_to_roman(number, i - 1, res)
 
 
 def convert_roman_to_arabic(number: str) -> int:
-    pass
+    '''
+    Функция переводит римское число в арабское.
+    
+    Input:
+    number: str - римское число,
+
+    Output:
+    res: int - арабское число.
+    '''
+    values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    subtracted_values = {'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900}
+    res = 0
+
+    for key, value in subtracted_values.items():
+        if number.find(key) > -1:
+            number = number.replace(key, '')
+            res += value
+            
+    for symbol in number:
+        res += values[symbol]
+    return res
 
 
 def average_age_by_position(file):

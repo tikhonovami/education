@@ -1,9 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, HTTPException
 
 from app.core import convert_arabic_to_roman, convert_roman_to_arabic
 from app.models import ConverterResponse
+
+import re
 
 
 router = APIRouter(tags=["Стажировка"])
@@ -27,6 +29,23 @@ async def convert_number(number: Annotated[int | str, Body()]) -> ConverterRespo
     }
     """
 
-    converter_response = ConverterResponse()
+    if isinstance(number, int):
+        if 1 <= number <= 3999:
+            converter_response = ConverterResponse(
+                arabic=number,
+                roman=convert_arabic_to_roman(number))
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="не поддерживается.")
+    else:
+        template = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
+        if not (bool(re.search(template, number))):
+            raise HTTPException(
+                status_code=400,
+                detail="римское число введено неверно.")
+        converter_response = ConverterResponse(
+            arabic=convert_roman_to_arabic(number),
+            roman=number)
 
     return converter_response

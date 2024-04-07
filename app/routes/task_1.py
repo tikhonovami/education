@@ -17,11 +17,12 @@ router = APIRouter(tags=["Стажировка"])
 """
 @router.post("/find_in_different_registers", description="Задание_1. Удаление дублей")
 async def find_in_different_registers(words: list[str]) -> list[str]:
-    """Input:
-       words: list[str] - список слов, в котором необходимо произвести
-       фильтрацию.
-       Output:
-       result: list[str] - уникальный список слов в нижнем регистре.
+    """
+    Input:
+    words: list[str] - список слов, в котором необходимо произвести
+    фильтрацию.
+    Output:
+    result: list[str] - уникальный список слов в нижнем регистре.
     """
     lower_words = dict()
     result = []
