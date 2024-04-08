@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 from io import StringIO
+import pandas
+
+from typing import Dict
+from os import path
 
 
 def convert_arabic_to_roman(number: int, i: int = -1, res: str = '') -> str:
@@ -52,8 +56,14 @@ def convert_roman_to_arabic(number: str) -> int:
     return res
 
 
-def average_age_by_position(file):
-    pass
+def average_age_by_position(file: str) -> Dict[str, float]:
+    file = 'app\\files\\' + file
+    if path.splitext(file)[1] != '.csv':
+        raise ValueError('Неверный формат файла.')
+    with open(file, 'r', encoding='utf-8') as f:
+        data = pandas.read_csv(f, delimiter=',')
+        data = data.groupby('Должность')['Возраст'].mean()
+        return data.to_dict()
 
 
 """

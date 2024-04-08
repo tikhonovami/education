@@ -1,6 +1,9 @@
-from typing import Union
+from typing import Union, Optional, List, Set, Dict
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, field_validator
+from pydantic_core.core_schema import FieldValidationInfo
+
+import datetime
 
 
 class ConverterRequest(BaseModel):
@@ -15,12 +18,46 @@ class ConverterResponse(BaseModel):
 class User(BaseModel):
     name: str
     age: int
-    adult: bool = None
+    adult: bool
+    message: str = None
+
+    @validator("age")
+    @classmethod
+    def validate_password(cls, value):
+        if 0 <= value <= 100:
+            return value
+        raise ValueError('Возраст не может быть меньше 0 и больше 100.')
+
+    @validator("adult")
+    @classmethod
+    def validate_adult(cls, v, values):
+        if v and values['age'] >= 18 or not v and values['age'] < 18:
+            return v
+        raise ValueError('Несоответствие в возрасте.')
+
+
+class Mapping(BaseModel):
+    list_of_ids: List[Union[str, int]]
+    tags: Set[str]
+    
+
+class Meta(BaseModel):
+    last_modification: str
+    list_of_skills: List[str] = None
+    mapping: Mapping
+
+    @validator("last_modification")
+    @classmethod
+    def validate_last_modification(cls, value):
+        if bool(datetime.datetime.strptime(value, '%d/%m/%Y')):
+            return value
+        raise ValueError('Неверный формат даты.')
 
 
 class BigJson(BaseModel):
     """Использует модель User."""
     user: User
+    meta: Meta
 
 
 # class UserRequest(BaseModel):
