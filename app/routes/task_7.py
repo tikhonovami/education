@@ -1,11 +1,19 @@
 import logging
 from contextvars import ContextVar
+import logging.config
+from time import time
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
+logging.config.fileConfig(r"app\\files\\log.config")
 output_log = logging.getLogger("output")
 client_host: ContextVar[str | None] = ContextVar("client_host", default=None)
+parameters = {"duration": 0, "method": "", "url": "", "status": ""}
+output_log = logging.LoggerAdapter(output_log, parameters)
+
+GLOBAL_TIME = time()
+
 
 """
 Задание_7. Логирование в FastAPI с использованием middleware.
@@ -22,12 +30,23 @@ client_host: ContextVar[str | None] = ContextVar("client_host", default=None)
 class CustomMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         """Load request ID from headers if present. Generate one otherwise."""
-        client_host.set(request.client.host)
-        output_log.info(f"Accepted request {request.method} {request.url}")
+        try:
+            global output_log
+            global GLOBAL_TIME
 
-        """Ваша реализация."""
+            client_host.set(request.client.host)
+            
+            response = await call_next(request)
+            duration = time() - GLOBAL_TIME 
+            GLOBAL_TIME = time()
+            
+            output_log.extra = {"duration": duration,
+                                "method": request.method,
+                                "url": request.url,
+                                "status": response.status_code}
+            output_log.info(f"Accepted request {request.method} {request.url}")
 
-        # В случае ошибки при запросе, возвращать код 500
-        response = Response("Internal Server Error", status_code=500)
-
-        return response
+            return response
+        except Exception as e:
+            response = Response("Internal Server Error", status_code=500)
+            return response
