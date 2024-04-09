@@ -1,6 +1,10 @@
 from fastapi import APIRouter
 
+from app.models import Task6Json
+
 from app.core import DataGenerator
+
+from os import popen, path
 
 router = APIRouter(tags=["API для хранения файлов"])
 
@@ -22,12 +26,16 @@ API должно принимать json, по типу:
 (Подумать, как переисползовать код из задания 5)
 """
 @router.post("/generate_file", description="Задание_6. Конвертер")
-async def generate_file() -> int:
+async def generate_file(json: Task6Json) -> int:
     """Описание."""
 
     data = DataGenerator()
-    data.generate()
-    data.to_file()
-    file_id: int = data.file_id
+
+    p = path.abspath("app\\files\\")
+
+    data.generate(json.matrix_size)
+    data.to_file(p, json.file_type)
+    
+    file_id: int | None = data.file_id
 
     return file_id

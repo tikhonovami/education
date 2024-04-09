@@ -18,10 +18,11 @@ b.	Добавить архивирование к post запросу, то ес
 async def upload_file(file: UploadFile):
     """
     Input:
-    file: UploadFile - файл, который нужно сохранить и заархивировать.
+    file: UploadFile - название файла (без пути), 
+    который нужно сохранить и заархивировать.
     Output:
-    {"file_id": file_id, "zip_file_id": zip_file_id}: {"file_id": int, "zip_file_id": int} - 
-    id файла, id архива.
+    {"file_id": file_id, "zip_file_id": zip_file_id}:
+    {"file_id": int, "zip_file_id": int} - id файла, id архива.
     """
 
     file_id: int

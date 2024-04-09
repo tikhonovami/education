@@ -1,6 +1,6 @@
 from typing import Union, Optional, List, Set, Dict
 
-from pydantic import BaseModel, validator, field_validator
+from pydantic import BaseModel, validator, Field
 from pydantic_core.core_schema import FieldValidationInfo
 
 import datetime
@@ -59,6 +59,10 @@ class BigJson(BaseModel):
     user: User
     meta: Meta
 
+class Task6Json(BaseModel):
+    """Описание JSON"""
+    file_type: str = Field(pattern='^(json|csv|yaml)$')
+    matrix_size: int = Field(ge=4, le=15)
 
 # class UserRequest(BaseModel):
 #     name: str

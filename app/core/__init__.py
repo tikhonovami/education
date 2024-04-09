@@ -1,9 +1,17 @@
 from abc import ABC, abstractmethod
 from io import StringIO
-import pandas
+from fastapi import HTTPException
+
+from pandas import read_csv
+from string import ascii_lowercase
+
+import csv
+import json 
+import yaml
 
 from typing import Dict
-from os import path
+from os import path, popen
+from random import choice, uniform
 
 
 def convert_arabic_to_roman(number: int, i: int = -1, res: str = '') -> str:
@@ -58,10 +66,12 @@ def convert_roman_to_arabic(number: str) -> int:
 
 def average_age_by_position(file: str) -> Dict[str, float]:
     file = 'app\\files\\' + file
+
     if path.splitext(file)[1] != '.csv':
         raise ValueError('Неверный формат файла.')
+    
     with open(file, 'r', encoding='utf-8') as f:
-        data = pandas.read_csv(f, delimiter=',')
+        data = read_csv(f, delimiter=',')
         data = data.groupby('Должность')['Возраст'].mean()
         return data.to_dict()
 
@@ -76,9 +86,13 @@ write, классов JSONWritter, CSVWritter, YAMLWritter.
 
 Допишите реализацию методов и классов.
 """
+
+
 class BaseWriter(ABC):
     """Абстрактный класс с методом write для генерации файла"""
-
+    def __init__(self):
+        pass
+        
     @abstractmethod
     def write(self, data: list[list[int, str, float]]) -> StringIO:
         """
@@ -86,47 +100,84 @@ class BaseWriter(ABC):
         :param data: полученные данные
         :return: Объект StringIO с данными из data
         """
-        pass
+        output = StringIO()
+        output.write(str(data))
+        return output
 
 
 class JSONWriter(BaseWriter):
-    """Потомок BaseWriter с переопределением метода write для генерации файла в json формате"""
+    """Потомок BaseWriter с переопределением метода write для генерации файла
+    в json формате
+    """
 
-    """Ваша реализация"""
-
-    pass
-
-
-class CSVWriter:
-    """Потомок BaseWriter с переопределением метода write для генерации файла в csv формате"""
-
-    """Ваша реализация"""
-
-    pass
+    def write(self, data: list[list[int, str, float]]) -> StringIO:
+        """
+        Записывает данные в строковый объект файла StringIO
+        :param data: полученные данные
+        :return: Объект StringIO с данными из data
+        """
+        json_str = json.dumps([{"int": d[0], "str": d[1], "float": d[2]} 
+                              for d in data])
+        return StringIO(json_str)
 
 
-class YAMLWriter:
-    """Потомок BaseWriter с переопределением метода write для генерации файла в yaml формате"""
+class CSVWriter(BaseWriter):
+    """Потомок BaseWriter с переопределением метода write для генерации файла
+    в csv формате
+    """
 
-    """Ваша реализация"""
+    def write(self, data: list[list[int, str, float]]) -> StringIO:
+        """
+        Записывает данные в строковый объект файла StringIO
+        :param data: полученные данные
+        :return: Объект StringIO с данными из data
+        """
+        io_obj = StringIO()
+        data.insert(0, ['int', 'str', 'float'])
+        csv_str = csv.writer(io_obj, delimiter=',', lineterminator='\n')
+        csv_str.writerows(data)
+        return io_obj
 
-    pass
+
+class YAMLWriter(BaseWriter):
+    """Потомок BaseWriter с переопределением метода write для генерации файла
+    в yaml формате
+    """
+
+    def write(self, data: list[list[int, str, float]]) -> StringIO:
+        """
+        Записывает данные в строковый объект файла StringIO
+        :param data: полученные данные
+        :return: Объект StringIO с данными из data
+        """
+        yaml_str = yaml.dump([{"int": d[0], "str": d[1], "float": d[2]} 
+                             for d in data])
+        return StringIO(yaml_str)
+
+
+class NoDataException(HTTPException):
+    def __init__(self, detail: str = "Нет данных.", status_code: int = 400):
+        super().__init__(status_code=status_code, detail=detail)
 
 
 class DataGenerator:
     def __init__(self, data: list[list[int, str, float]] = None):
         self.data: list[list[int, str, float]] = data
-        self.file_id = None
+        self.file_id: int | None = None
 
     def generate(self, matrix_size) -> None:
         """Генерирует матрицу данных заданного размера."""
 
         data: list[list[int, str, float]] = []
-        """Ваша реализация"""
 
+        for i in range(matrix_size):
+            random_word = ''.join([choice(ascii_lowercase) for _ in range(5)])
+            random_float = uniform(0.0, 100.0)
+            data.append([i, random_word, random_float])
+            
         self.data = data
 
-    def to_file(self, path: str, writer) -> None:
+    def to_file(self, path: str, writer: str) -> None:
         """
         Метод для записи в файл данных полученных после генерации.
         Если данных нет, то вызывается кастомный Exception.
@@ -134,6 +185,21 @@ class DataGenerator:
         :param writer: Одна из реализаций классов потомков от BaseWriter
         """
 
-        """Ваша реализация"""
+        if not self.data:
+            raise NoDataException
+        
+        if writer == 'json':
+            item = JSONWriter()
+        elif writer == 'yaml':
+            item = YAMLWriter()
+        else:
+            item = CSVWriter()
 
-        pass
+        io_item = item.write(self.data)
+        full_path = path + "\\data." + writer
+        
+        with open(full_path, 'w') as f:
+            f.write(io_item.getvalue())
+        
+        self.file_id = int(popen(fr'fsutil file queryfileid "{full_path}"').read().split(":")[-1].strip(), 16)
+        return
