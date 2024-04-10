@@ -1,12 +1,13 @@
 import logging
 from contextvars import ContextVar
 import logging.config
+from pathlib import Path
 from time import time
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
-logging.config.fileConfig(r"app\\files\\log.config")
+logging.config.fileConfig(r"./app/files/log.config")
 output_log = logging.getLogger("output")
 client_host: ContextVar[str | None] = ContextVar("client_host", default=None)
 parameters = {"duration": 0, "method": "", "url": "", "status": ""}
@@ -55,3 +56,4 @@ class CustomMiddleware(BaseHTTPMiddleware):
         except Exception as e:
             response = Response("Internal Server Error", status_code=500)
             return response
+

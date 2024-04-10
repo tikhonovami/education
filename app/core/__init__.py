@@ -65,7 +65,7 @@ def convert_roman_to_arabic(number: str) -> int:
 
 
 def average_age_by_position(file: str) -> Dict[str, float]:
-    file = 'app\\files\\' + file
+    file = r'app/files/' + file
 
     if path.splitext(file)[1] != '.csv':
         raise ValueError('Неверный формат файла.')
@@ -196,7 +196,7 @@ class DataGenerator:
             item = CSVWriter()
 
         io_item = item.write(self.data)
-        full_path = path + "\\data." + writer
+        full_path = path + "/data." + writer
         
         with open(full_path, 'w') as f:
             f.write(io_item.getvalue())

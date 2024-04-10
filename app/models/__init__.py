@@ -38,7 +38,7 @@ class User(BaseModel):
 
 class Mapping(BaseModel):
     list_of_ids: List[Union[str, int]]
-    tags: Set[str]
+    tags: List[str]
     
 
 class Meta(BaseModel):

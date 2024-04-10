@@ -3,7 +3,7 @@ from app.routes.task_7 import CustomMiddleware
 from time import time
 
 app = FastAPI()
-app.add_middleware(CustomMiddleware)
+#app.add_middleware(CustomMiddleware)
 
 
 from app.routes.task_1 import router as r_1

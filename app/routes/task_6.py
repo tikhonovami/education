@@ -31,7 +31,7 @@ async def generate_file(json: Task6Json) -> int:
 
     data = DataGenerator()
 
-    p = path.abspath("app\\files\\")
+    p = path.abspath(r"app/files/")
 
     data.generate(json.matrix_size)
     data.to_file(p, json.file_type)
