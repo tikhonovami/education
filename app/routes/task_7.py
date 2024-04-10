@@ -28,16 +28,21 @@ GLOBAL_TIME = time()
 Добавить middleware в приложение (app).
 """
 class CustomMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app):
+        super().__init__(app)
+
     async def dispatch(self, request: Request, call_next):
         """Load request ID from headers if present. Generate one otherwise."""
+
         try:
             global output_log
             global GLOBAL_TIME
-
+            
             client_host.set(request.client.host)
+            duration = time() - GLOBAL_TIME 
             
             response = await call_next(request)
-            duration = time() - GLOBAL_TIME 
+            
             GLOBAL_TIME = time()
             
             output_log.extra = {"duration": duration,
