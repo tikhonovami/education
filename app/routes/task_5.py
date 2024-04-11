@@ -1,8 +1,10 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile
 from fastapi.responses import FileResponse
 
-import zipfile
 from os import popen, path, listdir
+from typing import Dict
+import zipfile
+
 
 router = APIRouter(tags=["API для хранения файлов"])
 
@@ -15,14 +17,11 @@ b.	Добавить архивирование к post запросу, то ес
 с*.Добавить аннотации типов.
 """
 @router.post("/upload_file", description="Задание_5. API для хранения файлов")
-async def upload_file(file: UploadFile):
+async def upload_file(file: UploadFile) -> Dict[str, int]:
     """
-    Input:
-    file: UploadFile - название файла (без пути), 
-    который нужно сохранить и заархивировать.
-    Output:
-    {"file_id": file_id, "zip_file_id": zip_file_id}:
-    {"file_id": int, "zip_file_id": int} - id файла, id архива.
+    Добавляет файл в директорию files.
+    :param file: файл, который нужно сохранить и заархивировать.
+    :return: словарь с id файла и id архива.
     """
 
     file_id: int
@@ -39,22 +38,20 @@ async def upload_file(file: UploadFile):
         with zipfile.ZipFile(p + '.zip', 'w', zipfile.ZIP_DEFLATED) as z:
             z.write(p, arcname=p.split("/")[-1])
 
-
         file_id = int(popen(fr'fsutil file queryfileid "{p}"').read().split(":")[-1].strip(), 16)
         zip_file_id = int(popen(fr'fsutil file queryfileid "{p}.zip"').read().split(":")[-1].strip(), 16)
+
         return {"file_id": file_id, "zip_file_id": zip_file_id}
     except Exception as e:
         return {"message": e.args}
     
 
 @router.get("/download_file/{file_id}", description="Задание_5. API для хранения файлов")
-async def download_file(file_id: int):
+async def download_file(file_id: int) -> FileResponse:
     """
-    Input:
-    file_id: int - id файла
-    Output: 
-    file: FileResponse - файл для скачивания.
-
+    Скачивает файл.
+    :param file_id: id файла.
+    :return file: файл для скачивания.
     """
 
     file: FileResponse =  None

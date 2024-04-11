@@ -1,25 +1,9 @@
 from app.routes.task_7 import CustomMiddleware
 from fastapi import FastAPI
-#import psycopg2
+
 
 app = FastAPI()
 app.add_middleware(CustomMiddleware)
-
-# try:
-#     conn = psycopg2.connect(
-#         host='localhost',
-#         database='task11',
-#         port=5432,
-#         user='postgres',
-#         password='Q12tn16l'
-#     )
- 
-#     cursor = conn.cursor()
-#     print("Connection established.")
- 
-# except Exception as err:
-#     print("Something went wrong.")
-#     print(err)
 
 
 from app.routes.task_1 import router as r_1
