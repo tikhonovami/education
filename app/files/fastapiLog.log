@@ -27,3 +27,8 @@
 [2024-04-11 12:45:40] {task_7.py: 53} INFO | 12 | POST | http://127.0.0.1:8000/converter | 422
 [2024-04-11 12:45:58] {task_7.py: 53} INFO | 4 | POST | http://127.0.0.1:8000/converter | 200
 [2024-04-11 12:46:24] {task_7.py: 53} INFO | 24 | POST | http://127.0.0.1:8000/converter | 400
+[2024-04-11 13:09:03] {task_7.py: 53} INFO | 16 | POST | http://127.0.0.1:8000/check_json | 422
+[2024-04-11 13:09:50] {task_7.py: 53} INFO | 0 | POST | http://127.0.0.1:8000/check_json | 200
+[2024-04-11 13:11:44] {task_7.py: 53} INFO | 7 | POST | http://127.0.0.1:8000/check_json | 200
+[2024-04-11 13:13:30] {task_7.py: 53} INFO | 4 | POST | http://127.0.0.1:8000/check_json | 200
+[2024-04-11 13:15:25] {task_7.py: 53} INFO | 2 | POST | http://127.0.0.1:8000/check_json | 200
