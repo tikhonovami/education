@@ -94,3 +94,11 @@
 [2024-04-11 14:58:00] {task_7.py: 53} INFO | 13 | GET | http://127.0.0.1:8000/download_file/1125899906908013 | 200
 [2024-04-11 14:58:15] {task_7.py: 53} INFO | 14 | POST | http://127.0.0.1:8000/generate_file | 200
 [2024-04-11 14:58:21] {task_7.py: 53} INFO | 6 | GET | http://127.0.0.1:8000/download_file/562949953486712 | 200
+[2024-04-11 15:01:26] {task_7.py: 53} INFO | 1 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:27] {task_7.py: 53} INFO | 1 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:28] {task_7.py: 53} INFO | 1 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:28] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:29] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:29] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:29] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/new_request | 200
+[2024-04-11 15:01:30] {task_7.py: 53} INFO | 1 | GET | http://127.0.0.1:8000/new_request | 200
