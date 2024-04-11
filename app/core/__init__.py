@@ -83,7 +83,7 @@ def average_age_by_position(file: str) -> Dict[str, float]:
                      for i in range(len(correct_rows))])):
             raise HTTPException(
                 status_code=400,
-                detail="Невернок содержимое файла.")
+                detail="Неверное содержимое файла.")
                 
         data = data.groupby("Должность")["Возраст"].mean().fillna("null")
 
