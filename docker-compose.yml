@@ -1,0 +1,30 @@
+version: '3.10'
+
+services:
+
+  db:
+    image: postgres:16.2-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./app/files/create_table.sh:/docker-entrypoint-initdb.d/create_table.sh
+      - ./app/files/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Q12tn16l
+      - POSTGRES_DB=task11
+  web:
+    build: .
+
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://postgres:Q12tn16l@localhost:5432/task11
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

@@ -15,14 +15,15 @@ router = APIRouter(tags=["Стажировка"])
     Список слов для примера: ['Мама', 'МАМА', 'Мама', 'папа', 'ПАПА', 'Мама', 'ДЯдя', 'брАт', 'Дядя', 'Дядя', 'Дядя']
     Ожидаемый результат: ['папа','брат']
 """
+
+
 @router.post("/find_in_different_registers", description="Задание_1. Удаление дублей")
 async def find_in_different_registers(words: list[str]) -> list[str]:
     """
-    Input:
-    words: list[str] - список слов, в котором необходимо произвести
+    Удаляет дубли по регистру из списка.
+    :param words: список слов, в котором необходимо произвести
     фильтрацию.
-    Output:
-    result: list[str] - уникальный список слов в нижнем регистре.
+    :return result: уникальный список слов в нижнем регистре.
     """
     lower_words = dict()
     result = []

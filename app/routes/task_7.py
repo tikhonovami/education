@@ -46,7 +46,7 @@ class CustomMiddleware(BaseHTTPMiddleware):
             
             GLOBAL_TIME = time()
             
-            output_log.extra = {"duration": duration,
+            output_log.extra = {"duration": round(duration),
                                 "method": request.method,
                                 "url": request.url,
                                 "status": response.status_code}
