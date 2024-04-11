@@ -14,3 +14,16 @@
 [2024-04-11 12:12:32] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/openapi.json | 200
 [2024-04-11 12:12:48] {task_7.py: 53} INFO | 16 | POST | http://127.0.0.1:8000/find_in_different_registers | 200
 [2024-04-11 12:17:31] {task_7.py: 53} INFO | 76 | POST | http://127.0.0.1:8000/find_in_different_registers | 200
+[2024-04-11 12:42:12] {task_7.py: 53} INFO | 2 | POST | http://127.0.0.1:8000/converter | 200
+[2024-04-11 12:42:29] {task_7.py: 53} INFO | 17 | POST | http://127.0.0.1:8000/converter | 200
+[2024-04-11 12:42:34] {task_7.py: 53} INFO | 5 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:42:41] {task_7.py: 53} INFO | 7 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:43:16] {task_7.py: 53} INFO | 1 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:43:26] {task_7.py: 53} INFO | 8 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:43:42] {task_7.py: 53} INFO | 16 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:44:24] {task_7.py: 53} INFO | 30 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:44:34] {task_7.py: 53} INFO | 13 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:45:06] {task_7.py: 53} INFO | 16 | POST | http://127.0.0.1:8000/converter | 200
+[2024-04-11 12:45:40] {task_7.py: 53} INFO | 12 | POST | http://127.0.0.1:8000/converter | 422
+[2024-04-11 12:45:58] {task_7.py: 53} INFO | 4 | POST | http://127.0.0.1:8000/converter | 200
+[2024-04-11 12:46:24] {task_7.py: 53} INFO | 24 | POST | http://127.0.0.1:8000/converter | 400

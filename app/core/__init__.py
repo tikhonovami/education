@@ -6,7 +6,7 @@ from pandas import read_csv
 from string import ascii_lowercase
 
 import csv
-import json 
+import json
 import yaml
 
 from typing import Dict
@@ -14,65 +14,58 @@ from os import path, popen
 from random import choice, uniform
 
 
-def convert_arabic_to_roman(number: int, i: int = -1, res: str = '') -> str:
-    '''
-    Функция переводит арабское число в римское.
-
-    Input:
-    number: int - арабское число,
-    i: int = -1 - указатель на базовое значение,
-    res: str = '' - результат (римское число),
-
-    Output:
-    res: str = '' - результат (римское число).
-    '''
+def convert_arabic_to_roman(number: int, i: int = -1, res: str = "") -> str:
+    """
+    Переводит арабское число в римское.
+    :param number: арабское число,
+    :param i: указатель на базовое значение,
+    :param res: результат (римское число).
+    
+    :return res: результат (римское число).
+    """
     nums = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]
-    values = ['I', 'IV', 'V', 'IX', 'X', 'XL', 'L', 'XC', 'C', 'CD', 'D', 'CM', 'M']
+    values = ["I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"]
 
     if not number:
         return res
 
     div = number // nums[i]
     number %= nums[i]
-
     res += div * values[i]
 
     return convert_arabic_to_roman(number, i - 1, res)
 
 
 def convert_roman_to_arabic(number: str) -> int:
-    '''
-    Функция переводит римское число в арабское.
-    
-    Input:
-    number: str - римское число,
-
-    Output:
-    res: int - арабское число.
-    '''
-    values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-    subtracted_values = {'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900}
+    """
+    Переводит римское число в арабское.
+    :param number: римское число,
+    :return res:арабское число.
+    """
+    values = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    sub_values = {"IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900}
     res = 0
 
-    for key, value in subtracted_values.items():
+    for key, value in sub_values.items():
         if number.find(key) > -1:
-            number = number.replace(key, '')
+            number = number.replace(key, "")
             res += value
-            
+
     for symbol in number:
         res += values[symbol]
+
     return res
 
 
 def average_age_by_position(file: str) -> Dict[str, float]:
-    file = r'app/files/' + file
+    file = r"app/files/" + file
 
-    if path.splitext(file)[1] != '.csv':
-        raise ValueError('Неверный формат файла.')
+    if path.splitext(file)[1] != ".csv":
+        raise ValueError("Неверный формат файла.")
     
-    with open(file, 'r', encoding='utf-8') as f:
-        data = read_csv(f, delimiter=',')
-        data = data.groupby('Должность')['Возраст'].mean()
+    with open(file, "r", encoding="utf-8") as f:
+        data = read_csv(f, delimiter=",")
+        data = data.groupby("Должность")["Возраст"].mean()
         return data.to_dict()
 
 
@@ -133,8 +126,8 @@ class CSVWriter(BaseWriter):
         :return: Объект StringIO с данными из data
         """
         io_obj = StringIO()
-        data.insert(0, ['int', 'str', 'float'])
-        csv_str = csv.writer(io_obj, delimiter=',', lineterminator='\n')
+        data.insert(0, ["int", "str", "float"])
+        csv_str = csv.writer(io_obj, delimiter=",", lineterminator="\n")
         csv_str.writerows(data)
         return io_obj
 
@@ -171,7 +164,7 @@ class DataGenerator:
         data: list[list[int, str, float]] = []
 
         for i in range(matrix_size):
-            random_word = ''.join([choice(ascii_lowercase) for _ in range(5)])
+            random_word = "".join([choice(ascii_lowercase) for _ in range(5)])
             random_float = uniform(0.0, 100.0)
             data.append([i, random_word, random_float])
             
@@ -188,9 +181,9 @@ class DataGenerator:
         if not self.data:
             raise NoDataException
         
-        if writer == 'json':
+        if writer == "json":
             item = JSONWriter()
-        elif writer == 'yaml':
+        elif writer == "yaml":
             item = YAMLWriter()
         else:
             item = CSVWriter()
@@ -198,7 +191,7 @@ class DataGenerator:
         io_item = item.write(self.data)
         full_path = path + "/data." + writer
         
-        with open(full_path, 'w') as f:
+        with open(full_path, "w") as f:
             f.write(io_item.getvalue())
         
         self.file_id = int(popen(fr'fsutil file queryfileid "{full_path}"').read().split(":")[-1].strip(), 16)
