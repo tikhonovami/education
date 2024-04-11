@@ -4,7 +4,7 @@ from app.models import Task6Json
 
 from app.core import DataGenerator
 
-from os import popen, path
+from os import path
 
 router = APIRouter(tags=["API для хранения файлов"])
 
@@ -25,9 +25,16 @@ API должно принимать json, по типу:
 
 (Подумать, как переисползовать код из задания 5)
 """
+
+
 @router.post("/generate_file", description="Задание_6. Конвертер")
 async def generate_file(json: Task6Json) -> int:
-    """Описание."""
+    """
+    Генерирует файл форматов json, csv или yaml.
+    :param json: json файл с указанием типа генерируемого
+    файла и количества строк.
+    :return: id файла для скачивания.
+    """
 
     data = DataGenerator()
 

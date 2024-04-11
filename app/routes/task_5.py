@@ -16,6 +16,8 @@ a.	Написать API для добавления(POST) "/upload_file" и ск
 b.	Добавить архивирование к post запросу, то есть файл должен сжиматься и сохраняться в ZIP формате.
 с*.Добавить аннотации типов.
 """
+
+
 @router.post("/upload_file", description="Задание_5. API для хранения файлов")
 async def upload_file(file: UploadFile) -> Dict[str, int]:
     """

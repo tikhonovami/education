@@ -87,3 +87,10 @@
 [2024-04-11 14:49:01] {task_7.py: 53} INFO | 8 | GET | http://127.0.0.1:8000/download_file/281474976775724 | 200
 [2024-04-11 14:49:30] {task_7.py: 53} INFO | 53 | GET | http://127.0.0.1:8000/docs | 200
 [2024-04-11 14:49:31] {task_7.py: 53} INFO | 0 | GET | http://127.0.0.1:8000/openapi.json | 200
+[2024-04-11 14:57:05] {task_7.py: 53} INFO | 2 | POST | http://127.0.0.1:8000/generate_file | 200
+[2024-04-11 14:57:17] {task_7.py: 53} INFO | 12 | GET | http://127.0.0.1:8000/download_file/1970324837039778 | 200
+[2024-04-11 14:57:35] {task_7.py: 53} INFO | 18 | POST | http://127.0.0.1:8000/generate_file | 200
+[2024-04-11 14:57:47] {task_7.py: 53} INFO | 12 | GET | http://127.0.0.1:8000/download_file/1970324837039778 | 200
+[2024-04-11 14:58:00] {task_7.py: 53} INFO | 13 | GET | http://127.0.0.1:8000/download_file/1125899906908013 | 200
+[2024-04-11 14:58:15] {task_7.py: 53} INFO | 14 | POST | http://127.0.0.1:8000/generate_file | 200
+[2024-04-11 14:58:21] {task_7.py: 53} INFO | 6 | GET | http://127.0.0.1:8000/download_file/562949953486712 | 200
