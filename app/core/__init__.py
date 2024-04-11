@@ -58,14 +58,35 @@ def convert_roman_to_arabic(number: str) -> int:
 
 
 def average_age_by_position(file: str) -> Dict[str, float]:
+    """
+    Возвращает средний возраст сотрудников на каждой должности.
+    :param file: название файла в формате <название>.csv (файл
+    должен быть в папке files).
+    :return: данные о среднем возрасте сотрудников на каждой
+    должности.
+    """
     file = r"app/files/" + file
 
     if path.splitext(file)[1] != ".csv":
-        raise ValueError("Неверный формат файла.")
-    
+        raise HTTPException(
+            status_code=400,
+            detail="Неверный формат файла.")
+
     with open(file, "r", encoding="utf-8") as f:
         data = read_csv(f, delimiter=",")
-        data = data.groupby("Должность")["Возраст"].mean()
+        
+        rows = data.columns.values.tolist()
+        correct_rows = ["Имя", "Возраст", "Должность"]
+
+        if (len(rows) != len(correct_rows) or
+            not all([bool(correct_rows[i] == rows[i]) 
+                     for i in range(len(correct_rows))])):
+            raise HTTPException(
+                status_code=400,
+                detail="Невернок содержимое файла.")
+                
+        data = data.groupby("Должность")["Возраст"].mean().fillna("null")
+
         return data.to_dict()
 
 
